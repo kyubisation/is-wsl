@@ -19,3 +19,21 @@ import isWsl from 'is-wsl';
 console.log(isWsl);
 //=> true
 ```
+
+### Disable `is-wsl`
+
+Some tools break when trying to use binaries outside WSL.
+In these cases you can disable `is-wsl` by setting the `DISABLE_IS_WSL`
+environment variable.
+
+```sh
+DISABLE_IS_WSL=true
+```
+
+```js
+import isWsl from 'is-wsl';
+
+// When running inside Windows Subsystem for Linux
+console.log(isWsl);
+//=> false
+```

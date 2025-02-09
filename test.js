@@ -96,3 +96,23 @@ test('inside WSL, but inside container', async t => {
 	delete process.env.__IS_WSL_TEST__;
 	Object.defineProperty(process, 'platform', {value: originalPlatform});
 });
+
+test('inside WSL, but DISABLE_IS_WSL is set', async t => {
+	process.env.__IS_WSL_TEST__ = true;
+	process.env.DISABLE_IS_WSL = true;
+
+	const originalPlatform = process.platform;
+	Object.defineProperty(process, 'platform', {value: 'linux'});
+
+	const isWsl = await esmock('./index.js', {
+		fs: {
+			readFileSync: () => 'Linux version 4.19.43-microsoft-standard (oe-user@oe-host) (gcc version 7.3.0 (GCC)) #1 SMP Mon May 20 19:35:22 UTC 2019',
+		},
+	});
+
+	t.false(isWsl());
+
+	delete process.env.__IS_WSL_TEST__;
+	delete process.env.DISABLE_IS_WSL;
+	Object.defineProperty(process, 'platform', {value: originalPlatform});
+});

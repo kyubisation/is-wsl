@@ -4,7 +4,7 @@ import fs from 'node:fs';
 import isInsideContainer from 'is-inside-container';
 
 const isWsl = () => {
-	if (process.platform !== 'linux') {
+	if (process.platform !== 'linux' || process.env.DISABLE_IS_WSL) {
 		return false;
 	}
 
